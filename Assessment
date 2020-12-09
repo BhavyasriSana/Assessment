@@ -1,0 +1,69 @@
+DOCKER
+Part A
+1. With minimal possible layers to install Web Services and expose appropriate http port for accessing.
+Created a nodejs app and exposed a port 8080
+Command to build image
+“docker build –f Dockerfile –t nodejs .”
+Command to run the image, we map the port with 8080 in local machine.
+ “docker run –d –p 80:8080 –name nodejs  nodejs:latest”
+        The git repository URL : 	https://github.com/BhavyasriSana/Assessment/tree/main/NodeJS
+        
+ 2. You are trying to start a Docker container and it is failing to start – what according to you are possible causes
+ANS:- The possible causes are
+ User does not have enough permissions to the directory.
+ Port is already allocated to another service.
+ Container with same name already exists.
+ Not enough space on the device.
+ Proxy is not setup with docker registry.
+ Container build cache.
+ Running too many services in the same container.
+ 
+PART B
+    1.Using shell command search for a particular pattern (of your choice) to search Docker logs 
+         using awk command.                                                                                                
+      ANS:-Command to search for a particular pattern
+ Awk command can be used to find a particular pattern in Docker logs.
+	Below command print the lines which matches with given pattern.
+“docker logs test | awk '/Run/ {print}'” - (This will prints only the lines containing ‘Run’)
+
+    2. Execute a shell command inside a container to search for a file.
+    ANS:- Shell command to search for a file inside the container.
+ “docker exec –it <container name> find / -name <filename>” (without opening a bash interactive terminal)
+  “docker exec –it <container name> find / -name <filename> /bin/bash” (with a bash interactive terminal)
+
+JENKINS
+PART A
+1. There is a Jenkins pipeline failure the failure error at the outset suggest that build has  failed and one of the tool used for the build is running inside the container – what are the commands you will use for debugging the issue
+ANS:-Commands which can be used for debugging the issue
+ docker logs <container_Id> (command which shows all i/p o/p and errors of the container)
+docker exec -it <container_Id> /bin/bash (go inside a container and debug)
+docker cp <container_Id>:/pathinserver /local-path (to save the container log locally and debug the issue)
+docker commit <container_Id> my-broken-container && docker run -it my-broken-container /bin/bash
+docker stats <container_Id> (when we are using any metrics, and they show how the error occured)
+
+2. There is a build failure due to connectivity issue with one of the tools – what actions you will take to narrow down the issue.
+ANS:-The actions to be taken for norrow down the issue.
+Build failure analyzer to analyze the exact issue.
+Need to Check whether the required plugins for the required tools are correctly installed.
+Check whether the configured secret-token got expired.
+In case of master-slave configuration check whether master and slave are properly configured
+Check whether the apis written are properly working or not.
+Checking whether the credentials are properly configured
+
+3. As part of part of Jenkins pipeline build process assume that application is containerized and image needs to be pushed to repository, However there is a failure to indicate that image push has failed. What are the possible reasons for the failure
+ANS:-Reasons for push failed
+Docker pipeline plugin may not be installed.
+Docker push can fail if we provide an improper secret_key/not providing any secret_key in the configuration.
+In Jenkins file the stage may not be correct(syntax errors) or the proper credential name not specified.
+Access denied to docker hub
+Docker push halts without an error because of incorrect urls/image being timed out. For this restarting docker helps
+In the Jenkins credentials, credentials might not be added properly.
+Wrong tags being provided.
+Directly using the login credentials, without using "with credentials".
+Registry URL can be incorrect.
+
+    4. Write a shell script to setup git repo, docker build, push image to docker repository.
+Clone the shell script 
+ Executable permissions needs to be given to the .sh file
+Give chmod +x <filename> .
+ The git repository URL: https://github.com/BhavyasriSana/Assessment/blob/main/ShellScript/shell.sh
